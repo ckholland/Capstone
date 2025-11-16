@@ -1,6 +1,5 @@
 import streamlit as st
 import os
-import transformers
 
 # --- Load environment variables securely ---
 auth_endpoint = os.getenv("AUTH_ENDPOINT")
@@ -351,5 +350,6 @@ if st.button("Refresh"):
     wide_df['prev_score'] = 53.6
 
     st.markdown("Prepared data for model.")
+    st.write(wide_df)
 
     # This may need to be updated for November's score prior to the presentation
