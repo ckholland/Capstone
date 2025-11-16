@@ -30,7 +30,7 @@ if st.button("Refresh"):
             if not token:
                 raise RuntimeError("No access_token in response.")
             return token
-        st.markdown("Authenticated!")
+        st.markdown("1. ✅ Authenticated!")
 
         def call_filtered(q_filters=None, keywords=None, result_count = 1, label=None):
 
@@ -67,7 +67,7 @@ if st.button("Refresh"):
             print(json.dumps({k: data.get(k) for k in ("total_count", "items")}, indent=2))
 
             items = data.get("items", [])
-            st.markdown(f"\n✅ {len(items)} items found in {label}")
+            st.markdown(f">\n✅ {len(items)} items found in {label}")
             for i, it in enumerate(items[:5], 1):
                 print(f"{i}. [{it.get('platform_name')}] {it.get('post_title')}")
                 print((it.get('snippet_text') or '')[:200], "\n")
@@ -130,7 +130,7 @@ if st.button("Refresh"):
         # Build q_string dynamically
         q_string = f"start_date:gte:{start_date},end_date:lte:{end_date}"
 
-        st.markdown(f"✅ Generated q_string: {q_string}")
+        st.markdown(f"2. ✅ Set the date range for past 30 days: {q_string}")
 
 
         ## This pulls the 3,000 most-viewed snippets from each of our topics over the last month. Then is randomly samples 300 from the top 3,000
@@ -159,7 +159,7 @@ if st.button("Refresh"):
         ]
 
         all_rows = []
-
+        st.markdown("3. ✅ Data Loading:")
         for q in booleans:
             query_name = q["name"]
             keywords_string = q["query"]
@@ -200,7 +200,7 @@ if st.button("Refresh"):
                 writer.writeheader()
                 writer.writerows(all_rows)
 
-            st.markdown(f"💾 Saved {len(all_rows)} total sampled records across {len(booleans)} named queries to {csv_filename}")
+            st.markdown(f"💾 Loaded {len(all_rows)} total sampled records across {len(booleans)} topics")
         else:
             st.markdown("⚠️ No data to save.")
 
@@ -329,7 +329,7 @@ if st.button("Refresh"):
             .sort_index()
         )
 
-        print("Wide dataframe shape:", wide_df.shape)
+        st.success("Aggregated data by topic")
         wide_df.head()
 
         # Aggregating by internal and external sentiment
