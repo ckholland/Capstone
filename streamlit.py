@@ -13,9 +13,9 @@ import json, requests
 from requests.auth import HTTPBasicAuth
 
 ## Workflow
-with st.spinner("Loading model... please wait ⏳"): 
 
-    if st.button("Refresh"):
+if st.button("Refresh"):
+    with st.spinner("Working…"):
         def get_access_token():
             """Fetch OAuth token using client credentials."""
             r = requests.post(
@@ -353,4 +353,4 @@ with st.spinner("Loading model... please wait ⏳"):
         st.write(wide_df)
 
         # This may need to be updated for November's score prior to the presentation
-st.success("Done! ✅")
+    st.success("Done! ✅")
