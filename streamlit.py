@@ -129,7 +129,7 @@ if st.button("Refresh"):
     # Build q_string dynamically
     q_string = f"start_date:gte:{start_date},end_date:lte:{end_date}"
 
-    st.markdown("✅ Generated q_string:", q_string)
+    st.markdown(f"✅ Generated q_string: {q_string}")
 
 
     ## This pulls the 3,000 most-viewed snippets from each of our topics over the last month. Then is randomly samples 300 from the top 3,000
