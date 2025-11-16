@@ -14,7 +14,7 @@ from requests.auth import HTTPBasicAuth
 
 ## Workflow
 if st.button("Refresh"):
-    with st.spinner("Updating ⏳"):
+    with st.spinner("Gathering Data ⏳"):
         def get_access_token():
             """Fetch OAuth token using client credentials."""
             r = requests.post(
@@ -67,7 +67,7 @@ if st.button("Refresh"):
             print(json.dumps({k: data.get(k) for k in ("total_count", "items")}, indent=2))
 
             items = data.get("items", [])
-            st.markdown(f">>\n✅ {len(items)} items found in {label}")
+            st.markdown(f"\n✅ {len(items)} items found in {label}")
             for i, it in enumerate(items[:5], 1):
                 print(f"{i}. [{it.get('platform_name')}] {it.get('post_title')}")
                 print((it.get('snippet_text') or '')[:200], "\n")
@@ -254,7 +254,7 @@ if st.button("Refresh"):
             "missing_pct": missing_pct
         }).sort_values("missing_count", ascending=False)
         print(missing_summary)
-        st.markdown("Input data cleaned.")
+        st.markdown("4. ✅ Input data cleaned.")
 
 
         from transformers import pipeline, AutoTokenizer
@@ -300,27 +300,25 @@ if st.button("Refresh"):
             raise RuntimeError(f"Score count ({len(scores)}) does not match df length ({n})")
 
         df['sentiment'] = scores
-        st.markdown("Added 'sentiment' column to df (positive-negative score).")
+        st.markdown("5. ✅ Added 'sentiment' column to df (positive-negative score).")
 
         import numpy as np
 
         # Compute log(1 + count) and weight sentiment
         df['sentiment_weighted'] = df['sentiment'] * np.log1p(df['impression_count_comb'])
+        st.markdown("6. ✅ Sentiment scores weighted")
 
         # quick check
         print(df[['sentiment', 'impression_count_comb', 'sentiment_weighted']].head())
 
-        # Aggregate average sentiment_weighted for rows that have Month, Year, and topic
+        # Aggregate average sentiment_weighted by topic
         agg_df = (
             df.dropna(subset=['topic'])
             .groupby('topic', as_index=False)['sentiment_weighted']
             .mean()
             .rename(columns={'sentiment_weighted': 'sentiment_weighted_avg'})
         )
-
-
-        print("Aggregated shape:", agg_df.shape)
-        agg_df.head(10)
+        st.markdown("7. ✅ Aggregated by month")
 
         # Pivoting the dataframe to run through model
         wide_df = (
@@ -329,7 +327,7 @@ if st.button("Refresh"):
             .sort_index()
         )
 
-        st.success("Aggregated data by topic")
+        st.markdown("8. ✅ Table pivoted for model")
         wide_df.head()
 
         # Aggregating by internal and external sentiment
@@ -344,12 +342,14 @@ if st.button("Refresh"):
                             'Inflation_and_Prices','Personal_Financial_Situation','Unemployment_and_Job_Security',
                             'Business_and_Economic_Conditions', 'Government_Policy_and_Inflation_Control',
                             'Housing_Market','Investments_and_Stock_Market_Confidence'], axis=1)
+        st.markdown("9. ✅ Data aggregated to internal and external sentiment scores")
 
         wide_df
 
         # Manually adding in the score from the prior month
         wide_df['prev_score'] = 53.6
-
-        st.markdown("Prepared data for model.")
-        st.write(wide_df)  # This may need to be updated for November's score prior to the presentation
-    st.success("Done! ✅")
+    st.success("Data is prepared for the model ✅")
+    with st.spinner("Scoring data ⏳"):
+        ### Model running code
+    st.success(f"# Current Consumer Sentiment is {output}")
+    ## Then we can add some visuals and such here
