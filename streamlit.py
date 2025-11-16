@@ -33,8 +33,7 @@ if st.button("Refresh"):
             return token
         st.markdown("Authenticated!")
 
-        def call_filtered(q_filters=None, keywords=None, result_count = 1):
-
+        def call_filtered(q_filters=None, keywords=None, result_count=1, label=None):
 
             token = get_access_token()
 
@@ -68,8 +67,14 @@ if st.button("Refresh"):
             print(json.dumps({k: data.get(k) for k in ("total_count", "items")}, indent=2))
 
             items = data.get("items", [])
-            st.markdown(f"\n✅ items found: {len(items)} in {keywords.name}")
-
+            shown = label  # prefer the provided label
+            if not shown:
+                # fallback: if keywords is a dict and you want the single key
+                if isinstance(keywords, dict) and keywords:
+                    shown = next(iter(keywords))
+                else:
+                    shown = "keywords"
+            st.markdown(f"✅ items found: {len(items)} in **{shown}**")
             return data
 
         booleans = [
@@ -164,7 +169,12 @@ if st.button("Refresh"):
 
             print(f"🔍 Running query '{query_name}' ...")
 
-            data = call_filtered(q_filters=q_string, keywords=keywords_string, result_count=desired_results)
+            data = call_filtered(
+                q_filters=q_string,
+                keywords=keywords_string,
+                result_count=desired_results,
+                label=query_name,            # << show the current key name
+            )
             items = data.get("items", [])
 
             if not items:
