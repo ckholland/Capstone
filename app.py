@@ -351,5 +351,5 @@ if st.button("Refresh"):
     st.success("Data is prepared for the model ✅")
     with st.spinner("Scoring data ⏳"):
         ### Model running code
-    st.success(f"# Current Consumer Sentiment is {output}")
+    st.success(f"# Current Consumer Sentiment is FILL IN")
     ## Then we can add some visuals and such here
