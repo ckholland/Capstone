@@ -31,7 +31,7 @@ if st.button("Refresh"):
         return token
     st.markdown("Authenticated!")
 
-    def call_filtered(q_filters=None, keywords=None, result_count = 1, query_name=None):
+    def call_filtered(q_filters=None, keywords=None, result_count = 1, label=None):
 
 
         token = get_access_token()
@@ -66,7 +66,7 @@ if st.button("Refresh"):
         print(json.dumps({k: data.get(k) for k in ("total_count", "items")}, indent=2))
 
         items = data.get("items", [])
-        st.markdown(f"\n✅ {len(items)} items found in {query_name}")
+        st.markdown(f"\n✅ {len(items)} items found in {label}")
         for i, it in enumerate(items[:5], 1):
             print(f"{i}. [{it.get('platform_name')}] {it.get('post_title')}")
             print((it.get('snippet_text') or '')[:200], "\n")
