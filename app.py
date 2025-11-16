@@ -24,6 +24,7 @@ if st.button("Refresh"):
                 data={"grant_type": "client_credentials", "scope": scope},
                 timeout=20,
             )
+            print("[AUTH]", r.status_code)
             r.raise_for_status()
             token = r.json().get("access_token")
             if not token:
@@ -55,13 +56,23 @@ if st.button("Refresh"):
                 ]
             }
 
+            print("➡️ Query params:", params)
+            print("➡️ Body:", payload)
+
             r = requests.post(api_endpoint, headers=headers, params=params,
                             data=json.dumps(payload), timeout=30)
+            print("[EXPLORE] status:", r.status_code)
 
             data = r.json()
+            print(json.dumps({k: data.get(k) for k in ("total_count", "items")}, indent=2))
 
             items = data.get("items", [])
             st.markdown(f"\n✅ {len(items)} items found in {label}")
+            for i, it in enumerate(items[:5], 1):
+                print(f"{i}. [{it.get('platform_name')}] {it.get('post_title')}")
+                print((it.get('snippet_text') or '')[:200], "\n")
+
+            return data
 
         booleans = [
             {
@@ -158,6 +169,10 @@ if st.button("Refresh"):
             data = call_filtered(q_filters=q_string, keywords=keywords_string, result_count=desired_results, label=query_name)
             items = data.get("items", [])
 
+            if not items:
+                print(f"⚠️ No items returned for: {query_name}")
+                continue
+
             sample_size = min(300, len(items))
             sampled_items = random.sample(items, sample_size)
 
@@ -195,6 +210,9 @@ if st.button("Refresh"):
         file = "pendulum_results.csv"
 
         df = pd.read_csv(file)
+        print("Loaded:", file)
+        print("Shape:", df.shape)
+        df.head()
 
         # Keep only the necessary columns
         desired_cols = ['company', 'upload_date', 'impression_count_comb', 'platform', 'snippet_text']
@@ -206,6 +224,10 @@ if st.button("Refresh"):
         # Rename company to topic
         df.rename(columns={"company": "topic"}, inplace=True)
 
+        print("Kept columns:", df.columns.tolist())
+
+        df.head()
+
         # Count missing values per column (count and percent)
         missing_counts = df.isna().sum()
         missing_pct = (df.isna().mean() * 100).round(2)
@@ -215,10 +237,15 @@ if st.button("Refresh"):
             "missing_pct": missing_pct
         }).sort_values("missing_count", ascending=False)
 
+        print(missing_summary)
+
         # Drop any rows that contain missing values
         before_count = len(df)
         df = df.dropna().copy()
         removed_count = before_count - len(df)
+
+        print(f"Removed {removed_count} rows with any missing values. New shape: {df.shape}")
+        df.head()
 
         missing_counts = df.isna().sum()
         missing_pct = (df.isna().mean() * 100).round(2)
@@ -226,7 +253,9 @@ if st.button("Refresh"):
             "missing_count": missing_counts,
             "missing_pct": missing_pct
         }).sort_values("missing_count", ascending=False)
+        print(missing_summary)
         st.markdown("4. ✅ Input data cleaned.")
+
 
         from transformers import pipeline, AutoTokenizer
         import torch
@@ -278,6 +307,7 @@ if st.button("Refresh"):
         # Compute log(1 + count) and weight sentiment
         df['sentiment_weighted'] = df['sentiment'] * np.log1p(df['impression_count_comb'])
         st.markdown("6. ✅ Sentiment scores weighted")
+
 
         # Aggregate average sentiment_weighted by topic
         agg_df = (
