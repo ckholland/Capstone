@@ -1,5 +1,6 @@
 import streamlit as st
 import os
+import transformers
 
 # --- Load environment variables securely ---
 auth_endpoint = os.getenv("AUTH_ENDPOINT")
@@ -66,7 +67,7 @@ if st.button("Refresh"):
         print(json.dumps({k: data.get(k) for k in ("total_count", "items")}, indent=2))
 
         items = data.get("items", [])
-        st.markdown(f"\n✅ items found: {len(items)}")
+        st.markdown(f"\n✅ items found: {len(items)} in ")
         for i, it in enumerate(items[:5], 1):
             print(f"{i}. [{it.get('platform_name')}] {it.get('post_title')}")
             print((it.get('snippet_text') or '')[:200], "\n")
@@ -139,7 +140,7 @@ if st.button("Refresh"):
     import csv
     import random
 
-    desired_results = 3000
+    desired_results = 10
     csv_filename = "pendulum_results.csv"
 
     fieldnames = [
