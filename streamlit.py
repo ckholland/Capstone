@@ -13,8 +13,7 @@ import json, requests
 from requests.auth import HTTPBasicAuth
 
 ## Workflow
-with st.spinner("Loading AI model..."):
-   
+with st.spinner("Loading model... please wait ⏳"): 
 
     if st.button("Refresh"):
         def get_access_token():
@@ -354,5 +353,4 @@ with st.spinner("Loading AI model..."):
         st.write(wide_df)
 
         # This may need to be updated for November's score prior to the presentation
-
-    st.success("Model loaded successfully!")
+st.success("Done! ✅")
