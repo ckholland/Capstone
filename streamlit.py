@@ -33,49 +33,39 @@ if st.button("Refresh"):
             return token
         st.markdown("Authenticated!")
 
-        def call_filtered(q_filters=None, keywords=None, result_count=1, label=None):
+        def call_filtered(q_filters=None, keywords=None, result_count=1):
+            # Decide label and expression from whatever we got
+            if isinstance(keywords, dict) and "name" in keywords and "query" in keywords:
+                label = keywords["name"]
+                expr  = keywords["query"]
+            elif isinstance(keywords, dict) and keywords:   # e.g. {"topic": "AI"}
+                label, expr = next(iter(keywords.items()))
+            else:                                           # plain string fallback
+                label = "keywords"
+                expr  = keywords
 
             token = get_access_token()
-
             headers = {
-                "Authorization": token,  # or f"Bearer {token}" if required
+                "Authorization": token,
                 "x-api-key": api_key,
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
             }
-
             params = {
                 "q": q_filters,
                 "sort": "impression_count:desc",
                 "per_page": result_count,
-                "page": 1
+                "page": 1,
             }
-
-            payload = {
-                "conditions": [
-                    {"keywords_expression": keywords}
-                ]
-            }
-
-            print("➡️ Query params:", params)
-            print("➡️ Body:", payload)
+            payload = {"conditions": [{"keywords_expression": expr}]}
 
             r = requests.post(api_endpoint, headers=headers, params=params,
                             data=json.dumps(payload), timeout=30)
-            print("[EXPLORE] status:", r.status_code)
-
             data = r.json()
-            print(json.dumps({k: data.get(k) for k in ("total_count", "items")}, indent=2))
-
             items = data.get("items", [])
-            shown = label  # prefer the provided label
-            if not shown:
-                # fallback: if keywords is a dict and you want the single key
-                if isinstance(keywords, dict) and keywords:
-                    shown = next(iter(keywords))
-                else:
-                    shown = "keywords"
-            st.markdown(f"✅ items found: {len(items)} in **{shown}**")
+
+            st.markdown(f"✅ items found: {len(items)} in **{label}**")
             return data
+
 
         booleans = [
             {
@@ -164,17 +154,8 @@ if st.button("Refresh"):
         all_rows = []
 
         for q in booleans:
-            query_name = q["name"]
-            keywords_string = q["query"]
-
-            print(f"🔍 Running query '{query_name}' ...")
-
-            data = call_filtered(
-                q_filters=q_string,
-                keywords=keywords_string,
-                result_count=desired_results,
-                label=query_name,            # << show the current key name
-            )
+            # q is {"name": "...", "query": "..."}
+            data = call_filtered(q_filters=q_string, keywords=q, result_count=desired_results)
             items = data.get("items", [])
 
             if not items:
