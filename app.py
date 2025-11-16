@@ -12,6 +12,11 @@ api_key = os.getenv("API_KEY")
 import json, requests
 from requests.auth import HTTPBasicAuth
 
+data_points = st.slider(label = "How many snippets per topic?",
+						min_value = 1,
+						max_value = 3000,
+						value = 5)
+
 ## Workflow
 if st.button("Refresh"):
     with st.spinner("Gathering Data ⏳"):
@@ -140,7 +145,7 @@ if st.button("Refresh"):
         import csv
         import random
 
-        desired_results = 10
+        desired_results = data_points
         csv_filename = "pendulum_results.csv"
 
         fieldnames = [
@@ -344,6 +349,7 @@ if st.button("Refresh"):
         # Manually adding in the score from the prior month
         wide_df['prev_score'] = 53.6
     st.success("Data is prepared for the model ✅")
+    st.write(wide_df)
     with st.spinner("Scoring data ⏳"):
         ### Model running code
         print("blablabla")
