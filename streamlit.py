@@ -63,7 +63,7 @@ if st.button("Refresh"):
             data = r.json()
             items = data.get("items", [])
 
-            st.markdown(f"✅ items found: {len(items)} in **{label}**")
+            st.markdown(f"✅ {len(items)} snippets found for **{keywords.get('name', 'Unknown')}**")
             return data
 
 
