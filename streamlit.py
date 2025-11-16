@@ -68,10 +68,13 @@ if st.button("Refresh"):
             print(json.dumps({k: data.get(k) for k in ("total_count", "items")}, indent=2))
 
             items = data.get("items", [])
-            st.markdown(f"\n✅ items found: {len(items)} in ")
-            for i, it in enumerate(items[:5], 1):
-                print(f"{i}. [{it.get('platform_name')}] {it.get('post_title')}")
-                print((it.get('snippet_text') or '')[:200], "\n")
+            if isinstance(keywords, dict) and keywords:
+                # Get the single key name (since you call this once per key)
+                key_name = next(iter(keywords))
+            else:
+                key_name = str(keywords)
+
+            st.markdown(f"✅ Items found: {len(items)} in **{key_name}**")
 
             return data
 
