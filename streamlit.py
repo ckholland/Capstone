@@ -29,7 +29,7 @@ if st.button("Refresh"):
         if not token:
             raise RuntimeError("No access_token in response.")
         return token
-
+    st.markdown("Authenticated!")
 
     def call_filtered(q_filters=None, keywords=None, result_count = 1):
 
@@ -66,7 +66,7 @@ if st.button("Refresh"):
         print(json.dumps({k: data.get(k) for k in ("total_count", "items")}, indent=2))
 
         items = data.get("items", [])
-        print(f"\n✅ items found: {len(items)}")
+        st.markdown(f"\n✅ items found: {len(items)}")
         for i, it in enumerate(items[:5], 1):
             print(f"{i}. [{it.get('platform_name')}] {it.get('post_title')}")
             print((it.get('snippet_text') or '')[:200], "\n")
@@ -129,7 +129,7 @@ if st.button("Refresh"):
     # Build q_string dynamically
     q_string = f"start_date:gte:{start_date},end_date:lte:{end_date}"
 
-    print("✅ Generated q_string:", q_string)
+    st.markdown("✅ Generated q_string:", q_string)
 
 
     ## This pulls the 3,000 most-viewed snippets from each of our topics over the last month. Then is randomly samples 300 from the top 3,000
@@ -199,9 +199,9 @@ if st.button("Refresh"):
             writer.writeheader()
             writer.writerows(all_rows)
 
-        print(f"💾 Saved {len(all_rows)} total sampled records across {len(booleans)} named queries to {csv_filename}")
+        st.markdown(f"💾 Saved {len(all_rows)} total sampled records across {len(booleans)} named queries to {csv_filename}")
     else:
-        print("⚠️ No data to save.")
+        st.markdown("⚠️ No data to save.")
 
     # Load in the data
     import pandas as pd
@@ -253,6 +253,8 @@ if st.button("Refresh"):
         "missing_pct": missing_pct
     }).sort_values("missing_count", ascending=False)
     print(missing_summary)
+    st.markdown("Input data cleaned.")
+
 
     from transformers import pipeline, AutoTokenizer
     import torch
@@ -297,8 +299,7 @@ if st.button("Refresh"):
         raise RuntimeError(f"Score count ({len(scores)}) does not match df length ({n})")
 
     df['sentiment'] = scores
-    print("Added 'sentiment' column to df (positive-negative score).")
-    df.head()
+    st.markdown("Added 'sentiment' column to df (positive-negative score).")
 
     import numpy as np
 
@@ -348,5 +349,6 @@ if st.button("Refresh"):
     # Manually adding in the score from the prior month
     wide_df['prev_score'] = 53.6
 
-    wide_df
+    st.markdown("Prepared data for model.")
+
     # This may need to be updated for November's score prior to the presentation
