@@ -67,7 +67,7 @@ if st.button("Refresh"):
             print(json.dumps({k: data.get(k) for k in ("total_count", "items")}, indent=2))
 
             items = data.get("items", [])
-            st.markdown(f">\n✅ {len(items)} items found in {label}")
+            st.markdown(f">>\n✅ {len(items)} items found in {label}")
             for i, it in enumerate(items[:5], 1):
                 print(f"{i}. [{it.get('platform_name')}] {it.get('post_title')}")
                 print((it.get('snippet_text') or '')[:200], "\n")
