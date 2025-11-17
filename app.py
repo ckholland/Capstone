@@ -28,8 +28,7 @@ def load_ols():
 ols_model = load_ols()
 
 def load_ridge():
-    ridge = joblib.load("ridge.joblib")
-    return ridge
+    return joblib.load("ridge.joblib")
 
 ridge_model = load_ridge()
 	
