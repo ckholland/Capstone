@@ -212,7 +212,6 @@ if st.button("Refresh"):
                 writer.writerows(all_rows)
         else:
             st.markdown("⚠️ No data to save.")
-    st.success("Data gathered ✅ - Loaded {len(all_rows)} total sampled records across {len(booleans)} topics")
     st.success(f"Data gathered ✅ - Loaded {len(all_rows)} total sampled records across {len(booleans)} topics")
     with st.spinner("Scoring Data ⏳"):
         # Load in the data
