@@ -31,7 +31,7 @@ def load_ridge():
     ridge = joblib.load("ridge.joblib")
     return ridge
 
-ridge_model = load_ridge
+ridge_model = load_ridge()
 	
 def load_lasso():
     lasso = joblib.load("lasso.joblib")
