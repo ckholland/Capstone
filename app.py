@@ -373,30 +373,10 @@ if st.button("Refresh"):
     st.success("Data is prepared for the model ✅")
     st.write(wide_df)
     with st.spinner("Scoring data ⏳"):
-        # Use the EXACT object you printed (you said it's a RegressionResultsWrapper)
-        model = ols_model   # or rename to match your actual variable
-
-        # 1) Start from your input DF
-        X = wide_df.copy()
-
-        # 2) Ensure numeric dtypes (object columns will break predict)
-        for c in X.columns:
-            X[c] = pd.to_numeric(X[c], errors="coerce")
-        X = X.fillna(0.0)
-
-        # 3) Add/keep intercept
-        X = sm.add_constant(X, has_constant="add")
-
-        # 4) Force column set + order to match training exog
-        expected = model.model.exog_names        # e.g. ['const','feature1',...]
-        missing = [c for c in expected if c not in X.columns]
-        for c in missing:
-            if c != "const":
-                X[c] = 0.0                       # add missing dummies/features as 0
-        X = X.reindex(columns=expected, fill_value=0.0).astype(float)
-
-        # 5) Predict
-        ols_outcome = model.predict(X)
+        ols_outcome = ols_model.predict(X)
         lasso_outcome = lasso_model.predict(wide_df)
         ridge_outcome = ridge_model.predict(wide_df)
         X_wide = sm.add_constant(wide_df, has_constant='add')
+        ols_outcome = ols_model.predict(X_wide)
+    st.success("Analysis complete")
+    st.markdown(f"## The current consumer sentiment score is {ols_outcome}, {lasso_outcome}, {ridge_outcome}")
