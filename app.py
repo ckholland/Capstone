@@ -1,5 +1,7 @@
 import streamlit as st
 import os
+import statsmodels.api as sm
+
 
 # --- Load environment variables securely ---
 auth_endpoint = os.getenv("AUTH_ENDPOINT")
