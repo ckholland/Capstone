@@ -210,11 +210,9 @@ if st.button("Refresh"):
                 writer = csv.DictWriter(f, fieldnames=fieldnames)
                 writer.writeheader()
                 writer.writerows(all_rows)
-
-            st.markdown(f"💾 Loaded {len(all_rows)} total sampled records across {len(booleans)} topics")
         else:
             st.markdown("⚠️ No data to save.")
-    st.success("Data gathered ✅")
+    st.success("Data gathered ✅ - Loaded {len(all_rows)} total sampled records across {len(booleans)} topics")
     with st.spinner("Scoring Data ⏳"):
         # Load in the data
         import pandas as pd
