@@ -23,13 +23,19 @@ def load_ols():
     ols = joblib.load("ols.joblib")
     return ols
 
+ols = load_ols()
+
 def load_ridge():
 	ridge = joblib.load("ridge.joblib")
 	return ridge
+
+ridge = load_ridge()
 	
 def load_lasso():
     lasso = joblib.load("lasso.joblib")
     return lasso
+
+lasso = load_lasso()
 
 ## Workflow
 if st.button("Refresh"):
