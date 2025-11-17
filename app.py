@@ -20,7 +20,8 @@ data_points = st.slider(label = "How many snippets per topic?",
 						value = 5)
 
 
-from model_utils import ridge, lasso, ols
+from model_utils import ridge
+
 
 ## Workflow
 if st.button("Refresh"):
