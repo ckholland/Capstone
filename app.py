@@ -22,10 +22,10 @@ data_points = st.slider(label = "How many snippets per topic?",
 
 from model_utils import ridge, lasso, ols
 
+top = st.container()
 
 ## Workflow
-if st.button("Refresh"):
-    top = st.container()
+if top.button("Refresh"):
     with top.spinner("Gathering Data ⏳"):
         def get_access_token():
             """Fetch OAuth token using client credentials."""
