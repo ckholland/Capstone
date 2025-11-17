@@ -27,7 +27,9 @@ def load_ols():
 
 ols_model = load_ols
 
-from Model_training import ridge
+def load_ridge():
+    ridge = joblib.load("ridge.joblib")
+    return ridge
 
 ridge_model = load_ridge
 	
