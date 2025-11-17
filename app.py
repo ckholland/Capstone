@@ -17,7 +17,7 @@ data_points = st.slider(label = "How many snippets per topic?",
 						max_value = 3000,
 						value = 5)
 
-from model_utils import load_model
+from model_utils import load_ols, load_ridge, load_lasso
 
 @st.cache_resource  # or @st.cache depending on version of Streamlit
 def get_ols():
