@@ -25,18 +25,19 @@ def load_ols():
     ols = joblib.load("ols.joblib")
     return ols
 
-ols_model = load_ols()
+ols_model = load_ols
 
 def load_ridge():
-    return joblib.load("ridge.joblib")
+	ridge = joblib.load("ridge.joblib")
+	return ridge
 
-ridge_model = load_ridge()
+ridge_model = load_ridge
 	
 def load_lasso():
     lasso = joblib.load("lasso.joblib")
     return lasso
 
-lasso_model = load_lasso()
+lasso_model = load_lasso
 
 ## Workflow
 if st.button("Refresh"):
@@ -372,7 +373,6 @@ if st.button("Refresh"):
     st.success("Data is prepared for the model ✅")
     st.write(wide_df)
     with st.spinner("Scoring data ⏳"):
-        ridge_outcome = ridge_model(wide_df)
         # Use the EXACT object you printed (you said it's a RegressionResultsWrapper)
         model = ols_model   # or rename to match your actual variable
 
@@ -400,7 +400,3 @@ if st.button("Refresh"):
         lasso_outcome = lasso_model.predict(wide_df)
         ridge_outcome = ridge_model.predict(wide_df)
         X_wide = sm.add_constant(wide_df, has_constant='add')
-        ols_outcome = ols_model.predict(X_wide)
-    st.success("Analysis complete")
-    st.markdown(f"## The current consumer sentiment score is {ols_outcome}, {lasso_outcome}, {ridge_outcome}")
-    ## Then we can add some visuals and such here
