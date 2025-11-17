@@ -27,9 +27,7 @@ def load_ols():
 
 ols_model = load_ols
 
-def load_ridge():
-	ridge = joblib.load("ridge.joblib")
-	return ridge
+from Model_training import ridge
 
 ridge_model = load_ridge
 	
@@ -373,6 +371,7 @@ if st.button("Refresh"):
     st.success("Data is prepared for the model ✅")
     st.write(wide_df)
     with st.spinner("Scoring data ⏳"):
+        ridge_outcome = ridge(wide_df)
         # Use the EXACT object you printed (you said it's a RegressionResultsWrapper)
         model = ols_model   # or rename to match your actual variable
 
