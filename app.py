@@ -22,11 +22,10 @@ data_points = st.slider(label = "How many snippets per topic?",
 
 from model_utils import ridge, lasso, ols
 
-top = st.container()
 
 ## Workflow
-if top.button("Refresh"):
-    with top.spinner("Gathering Data ⏳"):
+if st.button("Refresh"):
+    with st.spinner("Gathering Data ⏳"):
         def get_access_token():
             """Fetch OAuth token using client credentials."""
             r = requests.post(
@@ -213,8 +212,8 @@ if top.button("Refresh"):
                 writer.writerows(all_rows)
         else:
             st.markdown("⚠️ No data to save.")
-    top.success(f"Data gathered ✅ - Loaded {len(all_rows)} total sampled records across {len(booleans)} topics")
-    with top.spinner("Scoring Data ⏳"):
+    st.success(f"Data gathered ✅ - Loaded {len(all_rows)} total sampled records across {len(booleans)} topics")
+    with st.spinner("Scoring Data ⏳"):
         # Load in the data
         import pandas as pd
 
@@ -359,6 +358,6 @@ if top.button("Refresh"):
         ridge_outcome = ridge(wide_df)
         lasso_outcome = lasso(wide_df)
         ols_outcome = ols(wide_df)
-    top.success("Analysis complete ✅")
-    top.markdown(f"## The current consumer sentiment score is {round(float(ols_outcome.iloc[0]), 1)} (ols), {round(float(lasso_outcome.iloc[0]), 1)} (lasso), {round(float(ridge_outcome.iloc[0]), 1)} (ridge)")
-
+    st.success("Analysis complete ✅")
+    st.markdown(f"## The current consumer sentiment score is {round(float(ols_outcome.iloc[0]), 1)} (ols), {round(float(lasso_outcome.iloc[0]), 1)} (lasso), {round(float(ridge_outcome.iloc[0]), 1)} (ridge)")
+    
