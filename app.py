@@ -214,7 +214,8 @@ if st.button("Refresh"):
             st.markdown(f"💾 Loaded {len(all_rows)} total sampled records across {len(booleans)} topics")
         else:
             st.markdown("⚠️ No data to save.")
-
+    st.success("Data gathered ✅")
+    with st.spinner("Scoring Data ⏳"):
         # Load in the data
         import pandas as pd
 
@@ -354,9 +355,8 @@ if st.button("Refresh"):
 
         # Manually adding in the score from the prior month
         wide_df['prev_score'] = 53.6
-    st.success("Data is prepared for the model ✅")
-    st.write(wide_df)
-    with st.spinner("Scoring data ⏳"):
+        st.markdown("### Model Inputs")
+        st.write(wide_df)
         ridge_outcome = ridge(wide_df)
         lasso_outcome = lasso(wide_df)
         ols_outcome = ols(wide_df)
