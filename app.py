@@ -371,7 +371,7 @@ if st.button("Refresh"):
     st.success("Data is prepared for the model ✅")
     st.write(wide_df)
     with st.spinner("Scoring data ⏳"):
-        ols_outcome = ols.predict(wide_df)
+        ols_outcome = ols_model.predict(wide_df)
         lasso_outcome = lasso_model.predict(wide_df)
         ridge_outcome = ridge_model.predict(wide_df)
     st.success("Analysis complete")
