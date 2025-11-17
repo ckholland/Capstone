@@ -373,7 +373,7 @@ if st.button("Refresh"):
     st.success("Data is prepared for the model ✅")
     st.write(wide_df)
     with st.spinner("Scoring data ⏳"):
-        ridge_outcome = ridge(wide_df)
+        ridge_outcome = ridge_model(wide_df)
         # Use the EXACT object you printed (you said it's a RegressionResultsWrapper)
         model = ols_model   # or rename to match your actual variable
 
