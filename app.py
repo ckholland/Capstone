@@ -17,23 +17,19 @@ data_points = st.slider(label = "How many snippets per topic?",
 						max_value = 3000,
 						value = 5)
 
-from model_utils import load_ols, load_ridge, load_lasso
+import joblib
 
-@st.cache_resource  # or @st.cache depending on version of Streamlit
-def get_ols():
-    return load_ols()
+def load_ols():
+    ols = joblib.load("ols.joblib")
+    return ols
 
-ols = get_ols()
-
-def get_lasso():
-    return load_lasso()
-
-lasso = get_lasso()
-
-def get_ridge():
-    return load_ridge()
-
-ridge = get_ridge()
+def load_ridge():
+	ridge = joblib.load("ridge.joblib")
+	return ridge
+	
+def load_lasso():
+    lasso = joblib.load("lasso.joblib")
+    return lasso
 
 ## Workflow
 if st.button("Refresh"):
