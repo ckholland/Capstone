@@ -20,9 +20,9 @@ data_points = st.slider(label = "How many snippets per topic?",
 						value = 5)
 
 
-from importnb import import_notebook
+from importnb import Notebook
 
-with import_notebook:
+with Notebook:
     import Model_training  # loads my_notebook.ipynb
 
 ridge_model = Model_training.ridge()
