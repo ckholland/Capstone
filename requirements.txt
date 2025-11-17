@@ -5,6 +5,7 @@ fsspec==2025.10.0
 hf-xet==1.2.0
 huggingface-hub==0.36.0
 idna==3.11
+importnb
 joblib
 numpy==2.3.4
 packaging==25.0

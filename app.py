@@ -19,21 +19,21 @@ data_points = st.slider(label = "How many snippets per topic?",
 						max_value = 3000,
 						value = 5)
 
-import joblib
+
+from importnb import import_notebook
+
+with import_notebook:
+    import Model_training  # loads my_notebook.ipynb
+
+ridge_model = Model_training.ridge()
+
+lasso_model = Model_training.lasso()
 
 def load_ols():
     ols = joblib.load("ols.joblib")
     return ols
 
 ols_model = load_ols
-
-from Model_training import ridge
-	
-def load_lasso():
-    lasso = joblib.load("lasso.joblib")
-    return lasso
-
-lasso_model = load_lasso
 
 ## Workflow
 if st.button("Refresh"):
@@ -369,10 +369,8 @@ if st.button("Refresh"):
     st.success("Data is prepared for the model ✅")
     st.write(wide_df)
     with st.spinner("Scoring data ⏳"):
-        ridge_outcome = ridge(wide_df)
-        ols_outcome = ols_model.predict(X)
+        ridge_outcome = ridge_model(wide_df)
         lasso_outcome = lasso_model.predict(wide_df)
-        X_wide = sm.add_constant(wide_df, has_constant='add')
-        ols_outcome = ols_model.predict(X_wide)
+        ols_outcome = ols_model.predict(wide_df)
     st.success("Analysis complete")
     st.markdown(f"## The current consumer sentiment score is {ols_outcome}, {lasso_outcome}, {ridge_outcome}")

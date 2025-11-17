@@ -1,0 +1,14 @@
+[console_scripts]
+importnb = importnb.__main__:main
+
+[importnb]
+ipy = importnb.loader:Notebook
+ipynb = importnb.loader:Notebook
+json = importnb.loaders:Json
+py = importnb.loader:Loader
+toml = importnb.loaders:Toml
+yaml = importnb.loaders:Yaml
+yml = importnb.loaders:Yaml
+
+[pytest11]
+importnb = importnb.utils.pytest_importnb
