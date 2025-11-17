@@ -360,5 +360,5 @@ if st.button("Refresh"):
         ridge_outcome = ridge(wide_df)
         lasso_outcome = lasso(wide_df)
         ols_outcome = ols(wide_df)
-    st.success("Analysis complete")
-    st.markdown(f"## The current consumer sentiment score is {ols_outcome}, {lasso_outcome}, {ridge_outcome}")
+    st.success("Analysis complete ✅")
+    st.markdown(f"## The current consumer sentiment score is {round(float(ols_outcome.iloc[0]), 1)}, {round(float(lasso_outcome.iloc[0]), 1)}, {round(float(ridge_outcome.iloc[0]), 1)}")
