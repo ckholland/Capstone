@@ -212,6 +212,7 @@ if st.button("Refresh"):
                 writer.writerows(all_rows)
         else:
             st.markdown("⚠️ No data to save.")
+    st.success("Data gathered ✅ - Loaded {len(all_rows)} total sampled records across {len(booleans)} topics")
     st.success(f"Data gathered ✅ - Loaded {len(all_rows)} total sampled records across {len(booleans)} topics")
     with st.spinner("Scoring Data ⏳"):
         # Load in the data
@@ -360,4 +361,3 @@ if st.button("Refresh"):
         ols_outcome = ols(wide_df)
     st.success("Analysis complete ✅")
     st.markdown(f"## The current consumer sentiment score is {round(float(ols_outcome.iloc[0]), 1)} (ols), {round(float(lasso_outcome.iloc[0]), 1)} (lasso), {round(float(ridge_outcome.iloc[0]), 1)} (ridge)")
-    
