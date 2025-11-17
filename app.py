@@ -373,7 +373,27 @@ if st.button("Refresh"):
     st.success("Data is prepared for the model ✅")
     st.write(wide_df)
     with st.spinner("Scoring data ⏳"):
-        X_wide = sm.add_constant(wide_df, has_constant='add')
+        import statsmodels.api as sm
+
+        # 1) Start from your new data
+        X_wide = wide_df.copy()
+
+        # 2) Ensure an intercept column exists
+        X_wide = sm.add_constant(X_wide, has_constant="add")  # adds/keeps 'const'
+
+        # 3) Align columns and order to what the model expects
+        exog_names = ols_model.model.exog_names            # e.g. ['const', 'feat1', 'feat2', ...]
+        missing = [c for c in exog_names if c not in X_wide.columns]
+
+        # Add any missing columns as 0.0 (common when some dummies weren’t present in new data)
+        for c in missing:
+            if c != "const":
+                X_wide[c] = 0.0
+
+        # Reorder columns to match the training design matrix
+        X_wide = X_wide.reindex(columns=exog_names, fill_value=0.0)
+
+        # 4) Predict
         ols_outcome = ols_model.predict(X_wide)
         lasso_outcome = lasso_model.predict(wide_df)
         ridge_outcome = ridge_model.predict(wide_df)
