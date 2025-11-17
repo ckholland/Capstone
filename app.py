@@ -20,13 +20,7 @@ data_points = st.slider(label = "How many snippets per topic?",
 						value = 5)
 
 
-from model_utils import ridge
-
-def load_ols():
-    ols = joblib.load("ols.joblib")
-    return ols
-
-ols_model = load_ols
+from model_utils import ridge, lasso, ols
 
 ## Workflow
 if st.button("Refresh"):
@@ -363,7 +357,7 @@ if st.button("Refresh"):
     st.write(wide_df)
     with st.spinner("Scoring data ⏳"):
         ridge_outcome = ridge(wide_df)
-        lasso_outcome = lasso.predict(wide_df)
-        ols_outcome = ols_model.predict(wide_df)
+        lasso_outcome = lasso(wide_df)
+        ols_outcome = ols(wide_df)
     st.success("Analysis complete")
     st.markdown(f"## The current consumer sentiment score is {ols_outcome}, {lasso_outcome}, {ridge_outcome}")
