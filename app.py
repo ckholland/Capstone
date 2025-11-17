@@ -17,6 +17,24 @@ data_points = st.slider(label = "How many snippets per topic?",
 						max_value = 3000,
 						value = 5)
 
+from model_utils import load_model
+
+@st.cache_resource  # or @st.cache depending on version of Streamlit
+def get_ols():
+    return load_ols()
+
+ols = get_ols()
+
+def get_lasso():
+    return load_lasso()
+
+lasso = get_lasso()
+
+def get_ridge():
+    return load_ridge()
+
+ridge = get_ridge()
+
 ## Workflow
 if st.button("Refresh"):
     with st.spinner("Gathering Data ⏳"):
@@ -351,8 +369,9 @@ if st.button("Refresh"):
     st.success("Data is prepared for the model ✅")
     st.write(wide_df)
     with st.spinner("Scoring data ⏳"):
-        ### Model running code
-        print("blablabla")
+        ols_outcome = ols.predict(wide_df)
+        lasso_outcome = lasso_model.predict(wide_df)
+        ridge_outcome = ridge_model.predict(wide_df)
     st.success("Analysis complete")
-    st.markdown(f"## The current consumer sentiment score is (blank)")
+    st.markdown(f"## The current consumer sentiment score is {ols_outcome}, {lasso_outcome}, {ridge_outcome}")
     ## Then we can add some visuals and such here
