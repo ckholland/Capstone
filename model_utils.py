@@ -11,7 +11,7 @@ def ridge(df):
     )
     return ridge_score
 
-def lasso(df)
+def lasso(df):
     coef_prev = 0.554995
     coef_internal = 0.000000
     coef_external = 1.729473
@@ -24,7 +24,7 @@ def lasso(df)
     )
     return lasso_score
 
-def ols(df)
+def ols(df):
     coef_prev = 0.3928
     coef_internal = 7.1732
     coef_external = 3.2819

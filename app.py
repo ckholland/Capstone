@@ -20,7 +20,7 @@ data_points = st.slider(label = "How many snippets per topic?",
 						value = 5)
 
 
-from model_utils import ridge
+from model_utils import ridge, lasso, ols
 
 
 ## Workflow
